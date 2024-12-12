@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gitopsdemo
+  labels:
+    env: gitops
+spec:
+  containers:
+  - image: iam7hills/dockerdemo:tomcatapp-{tagversion}
+    name: app1
+    ports:
+    - containerPort: 8080
+    imagePullPolicy: Always
