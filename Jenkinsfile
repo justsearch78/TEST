@@ -2,10 +2,10 @@ pipeline {
     agent any
     
     environment {
-        DOCKER_IMAGE = 'justsearch78/test-app'
+        DOCKER_IMAGE = 'justsearch78/nx'  // Updated to match the Docker image you've created
         GITHUB_REPO = 'https://github.com/justsearch78/TEST.git'
         KUBERNETES_NAMESPACE = 'default'
-        ARGOCD_APP_NAME = 'test-app'
+        ARGOCD_APP_NAME = 'nx-app'  // Updated to match your app name
     }
     
     stages {
@@ -53,7 +53,7 @@ pipeline {
                     docker.withRegistry('https://docker.io', 'nxtest') {
                         def customImage = docker.build("${DOCKER_IMAGE}:${env.BUILD_NUMBER}")
                         customImage.push()
-                        customImage.push('latest')
+                        customImage.push('latest')  // Push the latest tag as well
                     }
                 }
             }
@@ -63,8 +63,8 @@ pipeline {
             steps {
                 script {
                     sh """
-                        # Update image tag in deployment
-                        sed -i 's|image: justsearch78/test-app:.*|image: justsearch78/test-app:${env.BUILD_NUMBER}|g' deploy/deployment.yaml
+                        # Update image tag in deployment.yaml
+                        sed -i 's|image: justsearch78/nx:.*|image: justsearch78/nx:${env.BUILD_NUMBER}|g' deploy/deployment.yaml
                         
                         # Commit and push changes to GitHub
                         git config user.email "rakeshjustsearch78@gmail.com"
@@ -80,7 +80,7 @@ pipeline {
         stage('Trigger ArgoCD Sync') {
             steps {
                 script {
-                    withCredentials([
+                    withCredentials([ 
                         string(credentialsId: 'argocd-server', variable: 'ARGOCD_SERVER'),
                         string(credentialsId: 'argocd-token', variable: 'ARGOCD_TOKEN')
                     ]) {
@@ -88,7 +88,7 @@ pipeline {
                             # Login to ArgoCD
                             argocd login ${ARGOCD_SERVER} --token ${ARGOCD_TOKEN}
                             
-                            # Sync the application
+                            # Sync the application with ArgoCD
                             argocd app sync ${ARGOCD_APP_NAME}
                             
                             # Wait for application to be fully synchronized
