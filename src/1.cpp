@@ -21,13 +21,5 @@ public:
 int main() {
     TestApp app("MyTestApp");
     app.run();
-    
-    // Infinite loop to keep the application running
-    while (true) {
-        // The app does nothing here, but it keeps the container alive
-        // You can also add more functionality here if needed
-    }
-    
     return 0;
 }
-
