@@ -16,9 +16,9 @@ spec:
     spec:
       containers:
       - name: nx-app
-        image: justsearch78/nx:v1.0  # Using the correct Docker image
+        image: justsearch78/nx:v1.0
         ports:
-        - containerPort: 8080
+        - containerPort: 5000  # Changed to 5000
         resources:
           requests:
             cpu: 100m
