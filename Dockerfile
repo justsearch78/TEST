@@ -1,18 +1,33 @@
-# Use an official build environment
-FROM gcc:latest
+# Use an official Ubuntu runtime as a parent image
+FROM ubuntu:20.04
 
-# Set the working directory
+# Avoid prompts from apt
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install necessary dependencies
+RUN apt-get update && apt-get install -y \
+    cmake \
+    g++ \
+    make \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy the source code into the container
+# Copy the project files
 COPY . .
 
-# Install CMake
-RUN apt-get update && apt-get install -y cmake
-
 # Build the application
-RUN cmake . && make
+RUN mkdir -p build \
+    && cd build \
+    && cmake .. \
+    && make
 
-# Run the application
-CMD ["./hello-world"]
+# Expose port if your application runs a server
+EXPOSE 8080
 
+# Define environment variable
+ENV APP_NAME "TestApp"
+
+# Run the executable
+CMD ["./build/test_app"]

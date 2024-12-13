@@ -1,26 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-world-deployment
+  name: test-app-deployment
   labels:
-    app: hello-world
+    app: test-app
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: hello-world
+      app: test-app
   template:
     metadata:
       labels:
-        app: hello-world
+        app: test-app
     spec:
       containers:
-        - name: hello-world-container
-          image: your-docker-image-name:latest
-          ports:
-            - containerPort: 8080
-          resources:
-            limits:
-              memory: "128Mi"
-              cpu: "500m"
-
+      - name: test-app
+        image: justsearch78/test-app:latest
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
