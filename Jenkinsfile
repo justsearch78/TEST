@@ -62,7 +62,7 @@ pipeline {
                 script {
                     sh """
                         # Replace placeholder with Jenkins build number
-                        sed -i 's|TAG_PLACEHOLDER|${env.BUILD_NUMBER}|g' deploy/deployment.yaml
+                        sed -i 's|latest|${env.BUILD_NUMBER}|g' deploy/deployment.yaml
 
                         # Commit and push changes to GitHub
                         git config user.email "rakeshjustsearch78@gmail.com"
