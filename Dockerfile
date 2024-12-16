@@ -24,10 +24,10 @@ RUN mkdir -p build \
     && make
 
 # Expose port if your application runs a server
-EXPOSE 8080
+EXPOSE 5000
 
 # Define environment variable
 ENV APP_NAME "TestApp"
 
-# Run the executable
-CMD ["./build/test_app"]
+# Run the executable and keep container running
+CMD ["/bin/bash", "-c", "./build/test_app && tail -f /dev/null"]
