@@ -45,24 +45,40 @@ pipeline {
             }
         }
 
-        stage('Docker Build and Push') {
-            steps {
-                script {
-                    docker.withRegistry('https://docker.io', 'nxtest') {
-                        def customImage = docker.build("${DOCKER_IMAGE}:${env.BUILD_NUMBER}")
-                        customImage.push()
-                        customImage.push('latest')  // Push the latest tag as well
-                    }
-                }
+#        stage('Docker Build and Push') {
+ #           steps {
+  #              script {
+   #                 docker.withRegistry('https://docker.io', 'nxtest') {
+    #                    def customImage = docker.build("${DOCKER_IMAGE}:${env.BUILD_NUMBER}")
+     #                   customImage.push()
+      #                  customImage.push('latest')  // Push the latest tag as well
+       #             }
+        #        }
+         #   }
+       # }
+
+
+
+stage('Docker Build and Push') {
+    steps {
+        script {
+            docker.withRegistry('https://docker.io', 'nxtest') {
+                def customImage = docker.build("${DOCKER_IMAGE}:${env.BUILD_NUMBER}")
+                customImage.push()  // Push the version with the Jenkins build number
+                customImage.push('latest')  // Push the latest tag as well
             }
         }
+    }
+}
+
 
         stage('Update Kubernetes Manifests') {
             steps {
                 script {
                     sh """
                         # Replace placeholder with Jenkins build number
-                        sed -i 's|latest|${env.BUILD_NUMBER}|g' deploy/deployment.yaml
+                       # sed -i 's|latest|${env.BUILD_NUMBER}|g' deploy/deployment.yaml
+                          sed -i 's|latest|${env.BUILD_NUMBER}|g' deploy/deployment.yaml
 
                         # Commit and push changes to GitHub
                         git config user.email "rakeshjustsearch78@gmail.com"
