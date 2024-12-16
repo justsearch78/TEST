@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <thread>
+#include <chrono>
 
 class TestApp {
 private:
@@ -11,6 +13,13 @@ public:
     void run() {
         std::cout << "Running " << appName << std::endl;
         std::cout << "Hello from TEST repository!" << std::endl;
+
+        // Simulate a long-running process (e.g., server, worker)
+        while (true) {
+            // Simulate some work or waiting for a request
+            std::this_thread::sleep_for(std::chrono::seconds(10)); // Sleep for 10 seconds
+            std::cout << appName << " is still running..." << std::endl; // Output every 10 seconds
+        }
     }
 
     std::string getAppName() const {
@@ -20,14 +29,8 @@ public:
 
 int main() {
     TestApp app("MyTestApp");
-    app.run();
-    
-    // Infinite loop to keep the application running
-    while (true) {
-        // The app does nothing here, but it keeps the container alive
-        // You can also add more functionality here if needed
-    }
-    
-    return 0;
+    app.run(); // Start the app
+
+    return 0; // This will never be reached as `run` has an infinite loop.
 }
 
