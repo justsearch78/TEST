@@ -16,9 +16,9 @@ spec:
     spec:
       containers:
       - name: nx-app
-        image: justsearch78/nx:v1.0
+        image: justsearch78/nx:TAG_PLACEHOLDER  # Placeholder for dynamic image tag
         ports:
-        - containerPort: 5000  # Changed to 5000
+        - containerPort: 5000  # Application runs on port 5000
         resources:
           requests:
             cpu: 100m
